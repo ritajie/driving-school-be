@@ -1,3 +1,38 @@
 from typing import Any, List
 
-urlpatterns: List[Any] = []
+from django.urls import path
+
+from car.views.web_api import coach, goods, order, order_usage_record, user
+
+urlpatterns: List[Any] = [
+    path(
+        "users/<int:user_id>",
+        user.UserView.as_view(http_method_names=["get", "patch", "post"]),
+    ),
+    path(
+        "orders",
+        order.OrderListView.as_view(http_method_names=["get", "post"]),
+    ),
+    path(
+        "orders/<int:order_id>",
+        order.OrderOneView.as_view(http_method_names=["patch"]),
+    ),
+    path(
+        "order_usages",
+        order_usage_record.OrderUsageListView.as_view(
+            http_method_names=["get", "post"],
+        ),
+    ),
+    path(
+        "order_usages/<int:order_usage_id>",
+        order_usage_record.OrderUsageOneView.as_view(http_method_names=["patch"]),
+    ),
+    path(
+        "goods",
+        goods.GoodsView.as_view(http_method_names=["get"]),
+    ),
+    path(
+        "coaches",
+        coach.CoachView.as_view(http_method_names=["get", "patch", "post"]),
+    ),
+]
