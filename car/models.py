@@ -1,3 +1,5 @@
+import enum
+
 from django.db import models
 
 
@@ -39,6 +41,12 @@ class Goods(models.Model):
     actual_price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class OrderStatus(enum.IntEnum):
+    Serving = 0
+    Served = 1
+    Evaluated = 2
 
 
 class Order(models.Model):
