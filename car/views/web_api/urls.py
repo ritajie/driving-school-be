@@ -18,7 +18,7 @@ urlpatterns: List[Any] = [
         order.OrderOneView.as_view(http_method_names=["patch"]),
     ),
     path(
-        "order_usages",
+        "orders/<int:order_id>/usages",
         order_usage_record.OrderUsageListView.as_view(
             http_method_names=["get", "post"],
         ),

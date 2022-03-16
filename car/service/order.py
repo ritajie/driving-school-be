@@ -5,8 +5,8 @@ from car.models import Order, OrderStatus, OrderUsageRecord
 
 class OrderService:
     @classmethod
-    def get_list(cls) -> List[Order]:
-        return list(Order.objects.all())
+    def get_list(cls, user_id: int) -> List[Order]:
+        return list(Order.objects.filter(user_id=user_id))
 
     @classmethod
     def get_one(cls, id: int) -> Order:
