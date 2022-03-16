@@ -61,6 +61,10 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def goods(self) -> Goods:
+        return Goods.objects.get(id=self.goods_id)
+
 
 class OrderUsageRecord(models.Model):
     class Meta:
