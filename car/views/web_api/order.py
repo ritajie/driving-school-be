@@ -19,6 +19,23 @@ class OrderListView(View):
                     "coach_id": order.coach_id,
                     "goods_id": order.goods_id,
                     "status": order.status,
+                    "goods": {
+                        "id": order.goods.id,
+                        "name": order.goods.name,
+                        "course_duration": order.goods.course_duration,
+                        "origin_price": order.goods.origin_price,
+                        "actual_price": order.goods.actual_price,
+                        "description": order.goods.description,
+                    },
+                    "usage_history": [
+                        {
+                            "id": usage.id,
+                            "order_id": usage.order_id,
+                            "usage_duration": usage.usage_duration,
+                            "created_at": usage.created_at,
+                        }
+                        for usage in order.usage_history
+                    ],
                 }
                 for order in orders
             ],

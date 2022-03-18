@@ -13,13 +13,20 @@ class OrderService:
         return Order.objects.get(id=id)
 
     @classmethod
-    def creat(
+    def create(
         cls,
         user_id: int,
         coach_id: int,
         goods_id: int,
         status: OrderStatus = OrderStatus.Serving,
     ) -> Order:
+        from car.service.goods import GoodsService
+        from car.service.user import UserService
+
+        assert UserService.exist(user_id=user_id), "用户不存在"
+        assert GoodsService.exist(id=goods_id), "商品不存在"
+        # TODO: 校验 coach_id 是否存在
+
         order = Order(
             user_id=user_id,
             coach_id=coach_id,
@@ -66,21 +73,11 @@ class OrderService:
         order.save()
 
     @classmethod
-    def get_usage_duration(cls, id: int) -> int:
-        return sum(
-            OrderUsageRecord.objects.filter(order_id=id).values_list(
-                "usage_duration",
-                flat=True,
-            ),
-        )
-
-    @classmethod
     def use(cls, id: int, usage_duration: int) -> None:
         order = cls.get_one(id)
         assert order.status == OrderStatus.Serving, "此订单已经完成服务，不能再生成使用记录"
 
-        has_used_usage_duration = cls.get_usage_duration(id)
-        last_usage_duration = order.goods.course_duration - has_used_usage_duration
+        last_usage_duration = order.goods.course_duration - order.last_usage
         assert (
             last_usage_duration >= usage_duration
         ), f"订单剩余量不足，仅剩余 {last_usage_duration} 分钟"
@@ -94,7 +91,3 @@ class OrderService:
         if last_usage_duration <= usage_duration:
             order.status = OrderStatus.Served
             order.save()
-
-    @classmethod
-    def get_usage_history(cls, id: int) -> List[OrderUsageRecord]:
-        return list(OrderUsageRecord.objects.filter(order_id=id))

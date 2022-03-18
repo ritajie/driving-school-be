@@ -9,6 +9,14 @@ class GoodsService:
         return list(Goods.objects.all())
 
     @classmethod
+    def get_one(cls, id: int) -> Goods:
+        return Goods.objects.get(id=id)
+
+    @classmethod
+    def exist(cls, id: int) -> bool:
+        return Goods.objects.filter(id=id).exists()
+
+    @classmethod
     def create(
         cls,
         name: str,

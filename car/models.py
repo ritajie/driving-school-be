@@ -1,4 +1,5 @@
 import enum
+from typing import List
 
 from django.db import models
 
@@ -6,11 +7,11 @@ from django.db import models
 class User(models.Model):
     class Meta:
         db_table = "user"
+        app_label = "car"
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     phone = models.CharField(max_length=128)
-    email = models.CharField(max_length=255)
     headimg = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -19,6 +20,7 @@ class User(models.Model):
 class Coach(models.Model):
     class Meta:
         db_table = "coach"
+        app_label = "car"
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
@@ -32,6 +34,7 @@ class Coach(models.Model):
 class Goods(models.Model):
     class Meta:
         db_table = "goods"
+        app_label = "car"
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
@@ -52,6 +55,7 @@ class OrderStatus(enum.IntEnum):
 class Order(models.Model):
     class Meta:
         db_table = "order"
+        app_label = "car"
 
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField()
@@ -65,10 +69,24 @@ class Order(models.Model):
     def goods(self) -> Goods:
         return Goods.objects.get(id=self.goods_id)
 
+    @property
+    def last_usage(self) -> int:
+        return sum(
+            OrderUsageRecord.objects.filter(order_id=self.id).values_list(
+                "usage_duration",
+                flat=True,
+            ),
+        )
+
+    @property
+    def usage_history(self) -> List["OrderUsageRecord"]:
+        return list(OrderUsageRecord.objects.filter(order_id=self.id))
+
 
 class OrderUsageRecord(models.Model):
     class Meta:
         db_table = "order_usage_record"
+        app_label = "car"
 
     id = models.AutoField(primary_key=True)
     order_id = models.IntegerField()
