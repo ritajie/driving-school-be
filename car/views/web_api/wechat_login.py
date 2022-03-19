@@ -12,6 +12,7 @@ class WechatLoginView(View):
     def post(self, request):
         body = json.loads(request.body)
         code = body["code"]
+
         wechat_user = WechatUserService.get_one(code=code)
         users = UserService.get_list(
             types=[UserType.Wechat],

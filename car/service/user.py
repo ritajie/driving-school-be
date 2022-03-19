@@ -2,7 +2,7 @@ import logging
 from typing import List, Optional
 
 from car.models import User, UserType
-from car.utils.encrypt import ResultIdConverter
+from car.utils.encrypt import Encryptor
 
 NULL_USER = User(
     id=0,
@@ -45,7 +45,7 @@ class UserService:
     @classmethod
     def get_user_id(cls, session_id: str) -> Optional[int]:
         try:
-            user_id = ResultIdConverter.decrypt(session_id)
+            user_id = Encryptor.decrypt(session_id)
             return user_id
         except Exception as err:
             logging.error(err)
@@ -53,7 +53,7 @@ class UserService:
 
     @classmethod
     def gen_sessionid(cls, user_id: int) -> str:
-        return ResultIdConverter.encrypt(user_id)
+        return Encryptor.encrypt(user_id)
 
     @classmethod
     def create(

@@ -5,9 +5,9 @@ from typing import List, Union
 from Crypto.Cipher import AES
 
 
-class ResultIdConverter(object):
-    key = b"abc9ZcmhqJPVcpCN"
-    alphabet = "0123456789abcdefghijklmnopqrstuvwxyzluzhiyuannb"
+class Encryptor(object):
+    key = b"tH9EZcmhqJPlzynb"
+    alphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
 
     @classmethod
     def encrypt(cls, data: Union[int, str]) -> str:
@@ -21,8 +21,6 @@ class ResultIdConverter(object):
 
     @classmethod
     def decrypt(cls, encoded: str) -> int:
-        # TODO: 现存一个问题，加密后解密结果和原来的数字不一致
-        return 1
         encoded_bytes: bytes = binascii.unhexlify(encoded[1:])
         decoded_bytes: bytes = AES.new(cls.key, AES.MODE_CFB, cls.key).decrypt(
             encoded_bytes,
