@@ -19,6 +19,8 @@ class OrderListView(View):
                     "coach_id": order.coach_id,
                     "goods_id": order.goods_id,
                     "status": order.status,
+                    "created_at": order.created_at,
+                    "last_usage": order.last_usage,
                     "goods": {
                         "id": order.goods.id,
                         "name": order.goods.name,

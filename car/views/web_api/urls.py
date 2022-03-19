@@ -2,7 +2,10 @@ from typing import Any, List
 
 from django.urls import path
 
-from car.views.web_api import coach, goods, order, order_usage_record, user
+from car.views.web_api import (
+    api, coach, goods, order, order_usage_record,
+    user, wechat_login,
+)
 
 urlpatterns: List[Any] = [
     path(
@@ -34,5 +37,13 @@ urlpatterns: List[Any] = [
     path(
         "coaches",
         coach.CoachView.as_view(http_method_names=["get", "patch", "post"]),
+    ),
+    path(
+        "wechat_login",
+        wechat_login.WechatLoginView.as_view(http_method_names=["post"]),
+    ),
+    path(
+        "",
+        api.ApiView.as_view(http_method_names=["get"]),
     ),
 ]

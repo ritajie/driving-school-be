@@ -1,7 +1,12 @@
 import enum
+from dataclasses import dataclass
 from typing import List
 
 from django.db import models
+
+
+class UserType(enum.IntEnum):
+    Wechat = 0
 
 
 class User(models.Model):
@@ -13,8 +18,23 @@ class User(models.Model):
     name = models.CharField(max_length=128)
     phone = models.CharField(max_length=128)
     headimg = models.CharField(max_length=1024)
+    platform_openid = models.CharField(max_length=128)
+    type = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+@dataclass
+class WechatUser:
+    openid: str
+    nickname: str
+    sex: int
+    language: str
+    city: str
+    province: str
+    country: str
+    headimgurl: str
+    privilege: List[str]
 
 
 class Coach(models.Model):
@@ -42,6 +62,8 @@ class Goods(models.Model):
     course_duration = models.IntegerField()
     origin_price = models.IntegerField()
     actual_price = models.IntegerField()
+    city = models.CharField(max_length=128)
+    car_type = models.CharField(max_length=128)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -71,6 +93,10 @@ class Order(models.Model):
 
     @property
     def last_usage(self) -> int:
+        return self.goods.course_duration - self.usage_duration
+
+    @property
+    def usage_duration(self) -> int:
         return sum(
             OrderUsageRecord.objects.filter(order_id=self.id).values_list(
                 "usage_duration",

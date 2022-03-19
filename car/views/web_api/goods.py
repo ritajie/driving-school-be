@@ -8,7 +8,10 @@ from car.utils.http import http_response
 
 class GoodsView(View):
     def get(self, request):
-        goods = GoodsService.get_list()
+        # TODO 商品增加 car_type & city 参数过滤
+        car_type = request.GET.get("car_type") or None
+        city = request.GET.get("city") or None
+        goods = GoodsService.get_list(car_type=car_type, city=city)
         return http_response(
             request=request,
             data=[
@@ -30,6 +33,8 @@ class GoodsView(View):
         course_duration = body["course_duration"]
         origin_price = body["origin_price"]
         actual_price = body["actual_price"]
+        city = body["city"]
+        car_type = body["car_type"]
         description = body.get("description") or ""
 
         GoodsService.create(
@@ -37,6 +42,8 @@ class GoodsView(View):
             course_duration=course_duration,
             origin_price=origin_price,
             actual_price=actual_price,
+            city=city,
+            car_type=car_type,
             description=description,
         )
 
@@ -49,6 +56,8 @@ class GoodsView(View):
         course_duration = body.get("course_duration")
         origin_price = body.get("origin_price")
         actual_price = body.get("actual_price")
+        city = body.get("city")
+        car_type = body.get("car_type")
         description = body.get("description")
 
         GoodsService.update(
@@ -57,6 +66,8 @@ class GoodsView(View):
             course_duration=course_duration,
             origin_price=origin_price,
             actual_price=actual_price,
+            city=city,
+            car_type=car_type,
             description=description,
         )
 

@@ -1,7 +1,7 @@
 import logging
-from typing import Optional
+from typing import List, Optional
 
-from car.models import User
+from car.models import User, UserType
 from car.utils.encrypt import ResultIdConverter
 
 NULL_USER = User(
@@ -16,12 +16,31 @@ NULL_USER = User(
 
 class UserService:
     @classmethod
-    def get_one(cls, user_id: str) -> User:
-        return User.objects.get(id=user_id)
+    def get_list(
+        cls,
+        user_ids: Optional[List[int]] = None,
+        names: Optional[List[str]] = None,
+        types: Optional[List[UserType]] = None,
+        platform_openids: Optional[List[str]] = None,
+    ) -> List[User]:
+        users = User.objects.all()
+        if user_ids is not None:
+            users = users.filter(id__in=user_ids)
+        if names is not None:
+            users = users.filter(name__in=names)
+        if types is not None:
+            users = users.filter(type__in=types)
+        if platform_openids is not None:
+            users = users.filter(platform_openid__in=platform_openids)
+        return list(users)
+
+    @classmethod
+    def get_one(cls, user_id: int) -> User:
+        return cls.get_list(user_ids=[user_id])[0]
 
     @classmethod
     def exist(cls, user_id: int) -> bool:
-        return User.objects.filter(id=user_id).exists()
+        return bool(cls.get_list(user_ids=[user_id]))
 
     @classmethod
     def get_user_id(cls, session_id: str) -> Optional[int]:
@@ -41,12 +60,16 @@ class UserService:
         cls,
         name: str,
         phone: str,
+        type: UserType,
+        platform_openid: str,
         headimg: Optional[str] = None,
     ) -> User:
         user = User(
             name=name,
             phone=phone,
             headimg=headimg,
+            type=type,
+            platform_openid=platform_openid,
         )
         user.save()
         return user

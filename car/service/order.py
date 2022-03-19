@@ -77,7 +77,7 @@ class OrderService:
         order = cls.get_one(id)
         assert order.status == OrderStatus.Serving, "此订单已经完成服务，不能再生成使用记录"
 
-        last_usage_duration = order.goods.course_duration - order.last_usage
+        last_usage_duration = order.goods.course_duration - order.usage_duration
         assert (
             last_usage_duration >= usage_duration
         ), f"订单剩余量不足，仅剩余 {last_usage_duration} 分钟"
