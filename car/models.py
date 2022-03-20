@@ -69,6 +69,7 @@ class Goods(models.Model):
 
 
 class OrderStatus(enum.IntEnum):
+    WaittingCoach = -1
     Serving = 0
     Served = 1
     Evaluated = 2
@@ -119,3 +120,7 @@ class OrderUsageRecord(models.Model):
     usage_duration = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class ServiceError(Exception):
+    pass

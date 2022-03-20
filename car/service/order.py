@@ -18,7 +18,7 @@ class OrderService:
         user_id: int,
         coach_id: int,
         goods_id: int,
-        status: OrderStatus = OrderStatus.Serving,
+        status: OrderStatus,
     ) -> Order:
         from car.service.goods import GoodsService
         from car.service.user import UserService

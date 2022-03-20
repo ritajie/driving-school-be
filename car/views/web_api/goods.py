@@ -72,3 +72,21 @@ class GoodsView(View):
         )
 
         return http_response(request=request)
+
+
+class GoodsOneView(View):
+    def get(self, request, goods_id: int):
+        goods = GoodsService.get_one(id=goods_id)
+        return http_response(
+            request=request,
+            data={
+                "id": goods.id,
+                "name": goods.name,
+                "course_duration": goods.course_duration,
+                "origin_price": goods.origin_price,
+                "actual_price": goods.actual_price,
+                "description": goods.description,
+                "car_type": goods.car_type,
+                "city": goods.city,
+            },
+        )

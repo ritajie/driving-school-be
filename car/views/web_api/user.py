@@ -8,11 +8,10 @@ class UserView(View):
         return http_response(
             request=request,
             data={
-                "id": 1,
-                "name": "张三",
-                "phone": "13800138000",
-                "email": "",
-                "headimg": "",
+                "id": request.user.id,
+                "name": request.user.name,
+                "phone": request.user.phone,
+                "headimg": request.user.headimg,
             },
         )
 

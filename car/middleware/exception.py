@@ -1,6 +1,7 @@
 import logging
 from typing import List
 
+from car.models import ServiceError
 from car.utils.http import http_response
 
 
@@ -15,8 +16,14 @@ class ExceptionMiddleware:
     def process_exception(self, request, exception):
         logging.exception(exception)
         errors: List[str] = [type(exception).__name__, str(exception)]
+
+        if isinstance(exception, ServiceError):
+            message = str(exception)
+        else:
+            message = "服务器错误"
         return http_response(
             request=request,
             data={"errors": errors},
+            message=message,
             status_code=400,
         )

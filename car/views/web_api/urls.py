@@ -14,7 +14,7 @@ from car.views.web_api import (
 
 urlpatterns: List[Any] = [
     path(
-        "users/<int:user_id>",
+        "user",
         user.UserView.as_view(http_method_names=["get", "patch", "post"]),
         name="user",
     ),
@@ -44,6 +44,11 @@ urlpatterns: List[Any] = [
         "goods",
         goods.GoodsView.as_view(http_method_names=["get"]),
         name="goods",
+    ),
+    path(
+        "goods/<int:goods_id>",
+        goods.GoodsOneView.as_view(http_method_names=["get"]),
+        name="goods-one",
     ),
     path(
         "coaches",
