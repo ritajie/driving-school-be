@@ -15,12 +15,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `coach` (
   `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) DEFAULT NULL COMMENT '用户名',
-  `phone` varchar(128) NOT NULL COMMENT '电话',
+  `phone` varchar(128) COMMENT '电话',
   `headimg` varchar(1024) COMMENT '头像链接',
+  `platform_openid` varchar(128) NOT NULL COMMENT '其他平台的用户唯一标识',
+  `type` tinyint(4) NOT NULL COMMENT '用户类型 0=微信用户',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_phone` (`phone`)
+  UNIQUE KEY `unique_type_openapi` (`type`,`platform_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
@@ -45,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `user_id` int(20) unsigned NOT NULL COMMENT '用户 id',
   `coach_id` int(20) unsigned NOT NULL COMMENT '教练 id',
   `goods_id` int(20) unsigned NOT NULL COMMENT '套餐 id',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '订单状态 0=正在服务 1=服务完成待评价 2=已评价',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '订单状态 -1=等待接单 0=正在服务 1=服务完成待评价 2=已评价',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -76,3 +78,7 @@ insert ignore into goods  (name, description, course_duration, origin_price, act
 insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 F', '套餐 F 描述', 360, 600, 480, "南京", "普通 SUV 车型");
 insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 G', '套餐 G 描述', 420, 700, 560, "南京", "普通 SUV 车型");
 insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 H', '套餐 H 描述', 480, 800, 640, "南京", "普通 SUV 车型");
+
+
+-- user sessionid = z103fb683f666f699b0
+-- coach sessionid = z1077e818767bef3d88

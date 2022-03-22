@@ -1,6 +1,6 @@
 import enum
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from django.db import models
 
@@ -45,8 +45,9 @@ class Coach(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     phone = models.CharField(max_length=128)
-    email = models.CharField(max_length=255)
     headimg = models.CharField(max_length=1024)
+    platform_openid = models.CharField(max_length=128)
+    type = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -108,6 +109,19 @@ class Order(models.Model):
     @property
     def usage_history(self) -> List["OrderUsageRecord"]:
         return list(OrderUsageRecord.objects.filter(order_id=self.id))
+
+    @property
+    def user(self) -> User:
+        from car.service.user import UserService
+
+        return UserService.get_one(self.user_id)
+
+    @property
+    def coach(self) -> Optional[Coach]:
+        from car.service.coach import CoachService
+
+        coachs = CoachService.get_list(coach_ids=[self.coach_id])
+        return coachs[0] if coachs else None
 
 
 class OrderUsageRecord(models.Model):

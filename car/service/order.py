@@ -5,8 +5,24 @@ from car.models import Order, OrderStatus, OrderUsageRecord
 
 class OrderService:
     @classmethod
-    def get_list(cls, user_id: int) -> List[Order]:
-        return list(Order.objects.filter(user_id=user_id))
+    def get_list(
+        cls,
+        user_id: Optional[int] = None,
+        coach_id: Optional[int] = None,
+        status: Optional[OrderStatus] = None,
+    ) -> List[Order]:
+        orders = Order.objects.all()
+        if user_id is not None:
+            orders = orders.filter(user_id=user_id)
+        if coach_id is not None:
+            orders = orders.filter(coach_id=coach_id)
+        if status is not None:
+            orders = orders.filter(status=status)
+        return list(orders)
+
+    @classmethod
+    def get_list_of_coach(cls, coach_id: int) -> List[Order]:
+        return list(Order.objects.filter(coach_id=coach_id))
 
     @classmethod
     def get_one(cls, id: int) -> Order:

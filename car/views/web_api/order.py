@@ -10,18 +10,38 @@ from car.utils.http import http_response
 
 class OrderListView(View):
     def get(self, request):
-        orders = OrderService.get_list(user_id=request.user.id)
+        with_waitting_coach = bool(int(request.GET.get("with_waitting_coach", "0")))
+
+        if request.user:
+            orders = OrderService.get_list(user_id=request.user.id)
+        elif request.coach:
+            orders = OrderService.get_list(coach_id=request.coach.id)
+            if with_waitting_coach:
+                order_ids = {order.id for order in orders}
+                waitting_coach_orders = OrderService.get_list(
+                    status=OrderStatus.WaittingCoach,
+                )
+                orders += [o for o in waitting_coach_orders if o.id not in order_ids]
+
         return http_response(
             request=request,
             data=[
                 {
                     "id": order.id,
                     "user_id": order.user_id,
-                    "coach_id": order.coach_id,
-                    "goods_id": order.goods_id,
                     "status": order.status,
                     "created_at": order.created_at,
                     "last_usage": order.last_usage,
+                    "user": {
+                        "id": order.user.id,
+                        "name": order.user.name,
+                    },
+                    "coach": {
+                        "id": order.coach.id,
+                        "name": order.coach.name,
+                    }
+                    if order.coach
+                    else None,
                     "goods": {
                         "id": order.goods.id,
                         "name": order.goods.name,
@@ -29,6 +49,8 @@ class OrderListView(View):
                         "origin_price": order.goods.origin_price,
                         "actual_price": order.goods.actual_price,
                         "description": order.goods.description,
+                        "car_type": order.goods.car_type,
+                        "city": order.goods.city,
                     },
                     "usage_history": [
                         {
