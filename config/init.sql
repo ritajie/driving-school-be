@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS `order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_user_coach_goods` (`user_id`,`coach_id`,`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
@@ -59,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `order_usage_record` (
   `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(20) unsigned NOT NULL COMMENT '订单 id',
   `usage_duration` int(11) DEFAULT NULL COMMENT '使用量, 单位分钟',
+  `datetime` timestamp NOT NULL  COMMENT '服务时间',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)

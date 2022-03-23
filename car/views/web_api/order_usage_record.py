@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.views.generic import View
@@ -16,7 +17,7 @@ class OrderUsageListView(View):
                     "id": u.id,
                     "order_id": u.order_id,
                     "usage_duration": u.usage_duration,
-                    "created_at": u.created_at,
+                    "created_at": u.datetime,
                 }
                 for u in order.usage_history
             ],
@@ -25,8 +26,15 @@ class OrderUsageListView(View):
     def post(self, request, order_id: int):
         body = json.loads(request.body)
         usage_duration = body["usage_duration"]
+        datetime_ = datetime.datetime.strptime(body["datetime"], "%Y-%m-%d %H:%M")
+
+        assert usage_duration > 0
         assert OrderService.get_one(id=order_id).user_id == request.user.id, "无权限修改此订单"
-        OrderService.use(id=order_id, usage_duration=usage_duration)
+        OrderService.use(
+            id=order_id,
+            usage_duration=usage_duration,
+            datetime_=datetime_,
+        )
         return http_response(request=request)
 
 

@@ -96,12 +96,12 @@ class OrderOneView(View):
             raise ServiceError("没有教练权限")
         # NOTE 此接口只允许教练接单或退单
         if status not in (OrderStatus.WaittingCoach, OrderStatus.Serving):
-            raise ServiceError("非法 status")
+            raise ServiceError("收到了非法参数，请刷新页面重试")
         is_acceptting_order = status == OrderStatus.Serving
         is_canceling_order = status == OrderStatus.WaittingCoach
         if is_canceling_order:
             if order.usage_duration != 0:
-                raise ServiceError("已经有服务记录的订单不允许退单")
+                raise ServiceError("已经有服务记录的订单不允许退单，请刷新页面查看最新订单状态")
             if order.coach_id != coach.id:
                 raise ServiceError("您对此订单无权限")
         elif is_acceptting_order:

@@ -1,6 +1,7 @@
+import datetime
 from typing import List, Optional
 
-from car.models import Order, OrderStatus, OrderUsageRecord
+from car.models import Order, OrderStatus, OrderUsageRecord, ServiceError
 
 
 class OrderService:
@@ -89,18 +90,20 @@ class OrderService:
         order.save()
 
     @classmethod
-    def use(cls, id: int, usage_duration: int) -> None:
+    def use(cls, id: int, usage_duration: int, datetime_: datetime.datetime) -> None:
         order = cls.get_one(id)
-        assert order.status == OrderStatus.Serving, "此订单已经完成服务，不能再生成使用记录"
+
+        if order.status != OrderStatus.Serving:
+            raise ServiceError("此订单已经完成服务，不能再生成使用记录")
 
         last_usage_duration = order.goods.course_duration - order.usage_duration
-        assert (
-            last_usage_duration >= usage_duration
-        ), f"订单剩余量不足，仅剩余 {last_usage_duration} 分钟"
+        if last_usage_duration < usage_duration:
+            raise ServiceError(f"订单剩余量不足，仅剩余 {last_usage_duration} 分钟")
 
         order_usage_record = OrderUsageRecord(
             order_id=id,
             usage_duration=usage_duration,
+            datetime=datetime_,
         )
         order_usage_record.save()
 
