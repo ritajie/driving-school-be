@@ -1,0 +1,77 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+env:
+  aliyun_host: 47.112.171.117
+  aliyun_user: car
+  target_dir: /home/car/driving-school-be
+  macbook_air_private_key: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    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
+    -----END OPENSSH PRIVATE KEY-----
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: deploy
+        run: |
+          echo "${{ env.macbook_air_private_key }}" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${{env.aliyun_user}}@${{env.aliyun_host}} "
+            cd ${{env.target_dir}} && git fetch --all && git reset --hard origin/master &&
+            sudo docker-compose build && sudo docker-compose up -d"
