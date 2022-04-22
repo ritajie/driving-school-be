@@ -20,4 +20,4 @@ urlpatterns = [
     path("web_api/", include(("car.views.web_api.urls"))),
 ]
 
-handler500 = "ranger.errors.error_hander.handler500"
+handler500 = "car.views.errors.error_hander.handler500"

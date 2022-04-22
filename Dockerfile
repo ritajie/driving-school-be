@@ -17,6 +17,6 @@ COPY . /root/driving-school-be/
 
 WORKDIR /root/driving-school-be/
 
-ENV IS_SAAS 1
+ENV IS_PRODUCTION 1
 
 CMD ["/bin/bash", "bin/gunicorn_start.sh"]

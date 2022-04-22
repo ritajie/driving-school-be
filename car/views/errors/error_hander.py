@@ -13,7 +13,6 @@ def handler500(request: HttpRequest) -> HttpResponse:
     logger.error(traceback.format_exc())
     return http_response(
         request=request,
-        data={"errors": [traceback.format_exc()]},
         message=error,
         status_code=400,
     )
