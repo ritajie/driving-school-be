@@ -19,3 +19,5 @@ from django.urls import path
 urlpatterns = [
     path("web_api/", include(("car.views.web_api.urls"))),
 ]
+
+handler500 = "ranger.errors.error_hander.handler500"
