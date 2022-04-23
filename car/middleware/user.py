@@ -25,7 +25,11 @@ class UserMiddleware:
             user = None
         else:
             sessionid = request.COOKIES.get("sessionid") or ""
-            user, coach = SessionIDService.parse_sessionid(sessionid)
+            if sessionid:
+                user, coach = SessionIDService.parse_sessionid(sessionid)
+            else:
+                user = None
+                coach = None
             if user is None and coach is None:
                 from car.utils.http import http_response
 
