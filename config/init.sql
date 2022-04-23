@@ -1,3 +1,5 @@
+CREATE DATABASE `car`;
+
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) DEFAULT NULL COMMENT '用户名',
@@ -50,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '订单状态 -1=等待接单 0=正在服务 1=服务完成待评价 2=已评价',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
@@ -70,14 +72,14 @@ insert ignore into coach (name, phone, headimg) values ('教练 A', '12345678901
 insert ignore into `order` (user_id, coach_id, goods_id, status) values (1, 1, 1, 0);
 insert ignore into `order` (user_id, coach_id, goods_id, status) values (1, 1, 2, 0);
 insert ignore into `order` (user_id, coach_id, goods_id, status) values (1, 1, 3, 0);
-insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 A', '套餐 A 描述', 60, 100, 80, "南京", "普通轿车车型");
-insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 B', '套餐 B 描述', 120, 200, 160, "南京", "普通 SUV 车型");
-insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 C', '套餐 C 描述', 180, 300, 240, "南京", "女教练专属套餐");
-insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 D', '套餐 D 描述', 240, 400, 320, "南京", "普通 SUV 车型");
-insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 E', '套餐 E 描述', 300, 500, 400, "北京", "普通 SUV 车型");
-insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 F', '套餐 F 描述', 360, 600, 480, "南京", "普通 SUV 车型");
-insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 G', '套餐 G 描述', 420, 700, 560, "南京", "普通 SUV 车型");
-insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 H', '套餐 H 描述', 480, 800, 640, "南京", "普通 SUV 车型");
+insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 A', '套餐 A 描述', 60, 100, 80, "南京市", "普通轿车车型");
+insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 B', '套餐 B 描述', 120, 200, 160, "南京市", "普通 SUV 车型");
+insert ignore into goods (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 C', '套餐 C 描述', 180, 300, 240, "南京市", "女教练专属套餐");
+insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 D', '套餐 D 描述', 240, 400, 320, "南京市", "普通 SUV 车型");
+insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 E', '套餐 E 描述', 300, 500, 400, "北京市", "普通 SUV 车型");
+insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 F', '套餐 F 描述', 360, 600, 480, "南京市", "普通 SUV 车型");
+insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 G', '套餐 G 描述', 420, 700, 560, "南京市", "普通 SUV 车型");
+insert ignore into goods  (name, description, course_duration, origin_price, actual_price, city, car_type) values ('套餐 H', '套餐 H 描述', 480, 800, 640, "南京市", "普通 SUV 车型");
 
 
 -- user sessionid = z103fb683f666f699b0
