@@ -24,12 +24,13 @@ class WechatLoginView(View):
         else:
             user_or_coach = self._get_or_create_user(wechat_user)
 
-        return http_response(
-            request=request,
-            data={
-                "sessionid": SessionIDService.gen_sessionid(user_or_coach),
-            },
+        response = http_response(request=request, data={})
+        response.set_cookie(
+            "sessionid",
+            SessionIDService.gen_sessionid(user_or_coach),
+            max_age=3600 * 24 * 7,
         )
+        return response
 
     @classmethod
     def _get_or_create_user(cls, wechat_user: WechatUser) -> User:
