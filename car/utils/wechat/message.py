@@ -27,11 +27,39 @@ class CoursePurchasedSuccess(Message):
     def __init__(
         self,
         touser: str,
-        url: str,
-        data: dict,
+        order_id: str,
+        course_name: str,
+        price: str,
+        phone: str,
+        created_at: str,
     ) -> None:
-        template_id = "asD0cVNnVX2szBMUb3BpdSdsp9thPh_zaU8s3etqZWI"
-        super().__init__(touser, template_id, url, data)
+        title = "您已成功购买课程"
+        data = {
+            "first": {
+                "value": title,
+            },
+            "keyword1": {
+                "value": order_id,
+            },
+            "keyword2": {
+                "value": course_name,
+            },
+            "keyword3": {
+                "value": price,
+            },
+            "keyword4": {
+                "value": phone,
+            },
+            "keyword5": {
+                "value": created_at,
+            },
+        }
+        super().__init__(
+            touser=touser,
+            template_id="asD0cVNnVX2szBMUb3BpdSdsp9thPh_zaU8s3etqZWI",
+            url="http://car.lulaolu.com/order",
+            data=data,
+        )
 
 
 class WechatMessageUtils:
