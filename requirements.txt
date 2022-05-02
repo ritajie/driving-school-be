@@ -6,3 +6,4 @@ pycryptodome==3.9.7
 django-cors-headers==3.11.0
 requests==2.27.1
 gunicorn==20.0.4
+requests-to-curl==1.0.7

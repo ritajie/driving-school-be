@@ -7,7 +7,7 @@ from car.models import Coach, User, UserType, WechatUser
 from car.service.coach import CoachService
 from car.service.session import SessionIDService
 from car.service.user import UserService
-from car.service.wechat_user import WechatUserService
+from car.service.wechat.wechat_user import WechatUserService
 from car.utils.http import http_response
 
 

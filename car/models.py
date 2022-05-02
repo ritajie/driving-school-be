@@ -1,4 +1,5 @@
 import enum
+import time
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -135,6 +136,21 @@ class OrderUsageRecord(models.Model):
     datetime = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class WechatAccessToken(models.Model):
+    class Meta:
+        db_table = "wechat_access_token"
+        app_label = "car"
+
+    access_token = models.CharField(max_length=512)
+    expires_in = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def last_expore_seconds(self) -> float:
+        return self.created_at.timestamp() + self.expires_in - time.time()
 
 
 class ServiceError(Exception):

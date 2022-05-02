@@ -67,6 +67,16 @@ CREATE TABLE IF NOT EXISTS `order_usage_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
+CREATE TABLE IF NOT EXISTS `wechat_access_token` (
+  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
+  `access_token` varchar(512) COLLATE utf8_bin NOT NULL COMMENT 'access token',
+  `expires_in` int(11) DEFAULT NULL COMMENT 'token 的寿命，单位秒',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 insert ignore into user (name, phone, headimg, platform_openid, type) values ('路小鹿', '13800138000', 'https://thirdwx.qlogo.cn/mmopen/vi_32/4vNosr1iajSgoK3s6iawyOYvhcsyj4uViaXL8byKbB3iavqb1wIicMzoZKYbNbNVicIaS4mgpavACgFa49eWbke4ckBg/132', 'oBreM58H_2F40wfJPL0_isD9iZ-A', 0);
 insert ignore into coach (name, phone, headimg) values ('教练 A', '12345678901', '');
 insert ignore into `order` (user_id, coach_id, goods_id, status) values (1, 1, 1, 0);
