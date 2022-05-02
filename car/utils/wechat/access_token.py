@@ -11,7 +11,7 @@ class WechatAccessTokenUtils:
         token: WechatAccessToken = WechatAccessToken.objects.last()
         # NOTE: 这里只做兜底，我们会有定时任务刷新 token
         # TODO: 写一个定时任务刷新 token
-        need_refresh = token.last_expore_seconds < 60
+        need_refresh = not token or token.last_expore_seconds < 60
         if need_refresh:
             new_token = cls.refresh_access_token()
             return new_token
