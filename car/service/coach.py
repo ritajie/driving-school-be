@@ -24,8 +24,15 @@ class CoachService:
         return list(coachs)
 
     @classmethod
-    def get_one(cls, coach_id: int) -> Coach:
-        return cls.get_list(coach_ids=[coach_id])[0]
+    def get_one(cls, coach_id: int, assert_exist=True) -> Coach:
+        coachs = cls.get_list(coach_ids=[coach_id])
+        if coachs:
+            return coachs[0]
+        else:
+            if assert_exist:
+                return coachs[0]
+            else:
+                return None
 
     @classmethod
     def create(

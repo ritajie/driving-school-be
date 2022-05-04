@@ -35,8 +35,15 @@ class UserService:
         return list(users)
 
     @classmethod
-    def get_one(cls, user_id: int) -> User:
-        return cls.get_list(user_ids=[user_id])[0]
+    def get_one(cls, user_id: int, assert_exist=True) -> Optional[User]:
+        users = cls.get_list(user_ids=[user_id])
+        if users:
+            return users[0]
+        else:
+            if assert_exist:
+                return users[0]
+            else:
+                return None
 
     @classmethod
     def exist(cls, user_id: int) -> bool:

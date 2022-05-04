@@ -1,6 +1,7 @@
 from typing import Optional, Tuple, Union
 
 from car.models import Coach, User
+from car.service.coach import CoachService
 from car.service.user import UserService
 from car.utils.encrypt import Encryptor
 
@@ -26,10 +27,10 @@ class SessionIDService:
         is_coach = id_with_prefix < 0
         if is_user:
             user_id = id_with_prefix // cls.USER_PREFIX
-            user = UserService.get_one(user_id=user_id)
+            user = UserService.get_one(user_id=user_id, assert_exist=False)
             coach = None
         elif is_coach:
             coach_id = id_with_prefix // cls.COACH_PREFIX
-            coach = Coach.objects.get(id=coach_id)
+            coach = CoachService.get_one(coach_id, assert_exist=False)
             user = None
         return user, coach
