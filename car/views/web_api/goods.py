@@ -8,7 +8,6 @@ from car.utils.http import http_response
 
 class GoodsView(View):
     def get(self, request):
-        # TODO 商品增加 car_type & city 参数过滤
         car_type = request.GET.get("car_type") or None
         city = request.GET.get("city") or None
         goods = GoodsService.get_list(car_type=car_type, city=city)
@@ -22,6 +21,8 @@ class GoodsView(View):
                     "origin_price": good.origin_price,
                     "actual_price": good.actual_price,
                     "description": good.description,
+                    "city": good.city,
+                    "car_type": good.car_type,
                 }
                 for good in goods
             ],
