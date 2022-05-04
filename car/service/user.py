@@ -80,3 +80,7 @@ class UserService:
         )
         user.save()
         return user
+
+    @classmethod
+    def delete(cls, user_id: int) -> None:
+        User.objects.get(id=user_id).delete()
