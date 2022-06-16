@@ -9,5 +9,5 @@ services:
     network_mode: "host"
     volumes:
       - type: bind
-        source: /home/car/driving-school-be/config/config_map.py
-        target: /root/driving-school-be/config/config_map.py
+        source: /home/car/driving-school-be/car/config_map.py
+        target: /root/driving-school-be/car/config_map.py
